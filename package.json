@@ -1,0 +1,10 @@
+{
+  "name": "node-starter-project",
+  "version": "1.0.0",
+  "description": "this is a starter project with basic features like authentication, authorization, with proper directory structure.",
+  "main": "server.js",
+  "repository": "https://github.com/khalilahmad1547/node-starter-project.git",
+  "author": "Abdur Rahman",
+  "license": "MIT",
+  "private": false
+}
