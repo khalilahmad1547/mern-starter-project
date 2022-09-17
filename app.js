@@ -4,7 +4,9 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const path = require("path");
 const { exit } = require("process");
+require("dotenv").config();
 
+const { MONGODB_URL } = process.env;
 const userRouter = require("./api/routes/user_router");
 
 const app = express();
@@ -27,7 +29,7 @@ const connectToDB = async (url) => {
   }
 };
 
-connectToDB();
+connectToDB(MONGODB_URL);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
