@@ -1,7 +1,9 @@
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
+const mongoose = require("mongoose");
 const path = require("path");
+const { exit } = require("process");
 
 const userRouter = require("./api/routes/user_router");
 
@@ -14,6 +16,18 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/api/users", userRouter);
+
+const connectToDB = async (url) => {
+  try {
+    await mongoose.connect(url);
+    console.log("connected to DB");
+  } catch (error) {
+    console.log(error);
+    exit();
+  }
+};
+
+connectToDB();
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
