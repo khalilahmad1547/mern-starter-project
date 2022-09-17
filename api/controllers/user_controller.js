@@ -1,6 +1,6 @@
 const { StatusCodes } = require("http-status-codes");
 
-const { hash, matchPasword, jwtToken } = require("../helper/login_helper");
+const { hash, matchPasword, jwtToken } = require("../helpers/login_helper");
 const { User, userExists } = require("../db/models/user_model");
 
 const { BAD_GATEWAY, CREATED, INTERNAL_SERVER_ERROR, UNAUTHORIZED } =
