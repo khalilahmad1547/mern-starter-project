@@ -13,7 +13,7 @@ const User = mongoose.model("User", userSchema);
 
 const userExists = async (email) => {
   const res = await User.find({ email: email });
-  if (res.lenght >= 1) return true;
+  if (res.length >= 1) return true;
   else return false;
 };
 
