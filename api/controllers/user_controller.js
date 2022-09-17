@@ -1,7 +1,10 @@
-const { User, userExists } = require("../db/models/user_model");
 const { StatusCodes } = require("http-status-codes");
 
-const { BAD_GATEWAY, CREATED, INTERNAL_SERVER_ERROR } = StatusCodes;
+const { hash, matchPasword, jwtToken } = require("../helper/login_helper");
+const { User, userExists } = require("../db/models/user_model");
+
+const { BAD_GATEWAY, CREATED, INTERNAL_SERVER_ERROR, UNAUTHORIZED } =
+  StatusCodes;
 
 const signUpUser = async (req, res) => {
   const { fullName, email, password } = req.body;
@@ -12,10 +15,11 @@ const signUpUser = async (req, res) => {
       .json({ error: `user with ${email} is already exist` });
   } else {
     try {
+      const hashed_password = await hash(password);
       const user = new User({
         fullName: fullName,
         email: email,
-        password: password,
+        password: hashed_password,
       });
       await user.save();
       return res.status(CREATED).json(user);
