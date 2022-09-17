@@ -1,5 +1,5 @@
 const { User, userExists } = require("../db/models/user_model");
-import { ReasonPhrases, StatusCodes } from "http-status-codes";
+const { StatusCodes } = require("http-status-codes");
 
 const { BAD_GATEWAY, CREATED, INTERNAL_SERVER_ERROR } = StatusCodes;
 
@@ -7,7 +7,9 @@ const signUpUser = async (req, res) => {
   const { fullName, email, password } = req.body;
   const exist = await userExists(email);
   if (exist) {
-    return res.status(BAD_GATEWAY).json({ error: ReasonPhrases.BAD_GATEWAY });
+    return res
+      .status(BAD_GATEWAY)
+      .json({ error: `user with ${email} is already exist` });
   } else {
     try {
       const user = new User({
