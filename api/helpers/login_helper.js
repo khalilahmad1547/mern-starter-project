@@ -16,8 +16,14 @@ const jwtToken = (payload) => {
   });
 };
 
+const jwtTokenVerifier = (token) => {
+  const { SERVER_SECREAT_KEY, JWT_TOKEN_EXPIRY_TIME } = process.env;
+  return jwt.verify(token, SERVER_SECREAT_KEY);
+};
+
 module.exports = {
   hash,
   matchPasword,
   jwtToken,
+  jwtTokenVerifier,
 };
