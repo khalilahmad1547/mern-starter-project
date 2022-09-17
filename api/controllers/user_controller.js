@@ -3,8 +3,7 @@ const { StatusCodes } = require("http-status-codes");
 const { hash, matchPasword, jwtToken } = require("../helpers/login_helper");
 const { User, userExists } = require("../db/models/user_model");
 
-const { BAD_GATEWAY, CREATED, INTERNAL_SERVER_ERROR, UNAUTHORIZED } =
-  StatusCodes;
+const { BAD_GATEWAY, CREATED, INTERNAL_SERVER_ERROR } = StatusCodes;
 
 const signUpUser = async (req, res) => {
   const { fullName, email, password } = req.body;
