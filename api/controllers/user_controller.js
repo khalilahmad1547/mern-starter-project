@@ -5,16 +5,20 @@ const signUpUser = async (req, res) => {
   const exist = await userExists(email);
   if (exist) {
     return res
-      .status(404)
+      .status(502)
       .json({ message: `user with ${email} already exist` });
   } else {
-    const user = new User({
-      fullName: fullName,
-      email: email,
-      password: password,
-    });
-    await user.save();
-    res.status(201).json(user);
+    try {
+      const user = new User({
+        fullName: fullName,
+        email: email,
+        password: password,
+      });
+      await user.save();
+      return res.status(201).json(user);
+    } catch (error) {
+      return res.status(500).json(error);
+    }
   }
 };
 
