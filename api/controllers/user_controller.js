@@ -1,12 +1,13 @@
 const { User, userExists } = require("../db/models/user_model");
+import { ReasonPhrases, StatusCodes } from "http-status-codes";
 
 const signUpUser = async (req, res) => {
   const { fullName, email, password } = req.body;
   const exist = await userExists(email);
   if (exist) {
     return res
-      .status(502)
-      .json({ message: `user with ${email} already exist` });
+      .status(StatusCodes.BAD_GATEWAY)
+      .json({ error: ReasonPhrases.BAD_GATEWAY });
   } else {
     try {
       const user = new User({
@@ -15,9 +16,9 @@ const signUpUser = async (req, res) => {
         password: password,
       });
       await user.save();
-      return res.status(201).json(user);
+      return res.status(StatusCodes.CREATED).json(user);
     } catch (error) {
-      return res.status(500).json(error);
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(error);
     }
   }
 };
