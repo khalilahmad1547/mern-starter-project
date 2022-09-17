@@ -1,4 +1,5 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
+
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
@@ -8,4 +9,15 @@ const userSchema = new Schema({
   userType: { type: String, enum: ["admin", "player"], default: "player" },
 });
 
-module.exports = mongoose.model("User", userSchema);
+const User = mongoose.model("User", userSchema);
+
+const userExists = async (email) => {
+  const res = await User.find({ email: email });
+  if (res.lenght >= 1) return true;
+  else return false;
+};
+
+module.exports = {
+  User,
+  userExists,
+};
