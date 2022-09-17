@@ -25,7 +25,35 @@ const signUpUser = async (req, res) => {
   }
 };
 
-const loginUser = (req, res) => {};
+const loginUser = async (req, res) => {
+  const { fullName, email, password } = req.body;
+  const user = await User.find({ email: email });
+  if (user.length < 1) {
+    // user not found
+    return res.status(BAD_GATEWAY).json({
+      message: "email or password is wrong",
+    });
+  }
+  console.log(user);
+  const correctPassowrd = await matchPasword(password, user[0].password);
+  if (correctPassowrd) {
+    // return the JWT
+    const token = jwtToken({
+      fullName: user[0].fullName,
+      email: user[0].email,
+      _id: user[0]._id,
+    });
+
+    return res.status(CREATED).json({
+      message: "Auth successful",
+      token: token,
+    });
+  }
+
+  return res.status(BAD_GATEWAY).json({
+    message: "email or password is wrong",
+  });
+};
 
 const resetPassword = (req, res) => {};
 
