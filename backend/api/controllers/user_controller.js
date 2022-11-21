@@ -6,7 +6,7 @@ const { User, userExists } = require("../db/models/user_model");
 const { BAD_GATEWAY, CREATED, INTERNAL_SERVER_ERROR } = StatusCodes;
 
 const signUpUser = async (req, res) => {
-  const { fullName, email, password } = req.body;
+  const { first_name, last_name, email, password } = req.body;
   const exist = await userExists(email);
   if (exist) {
     return res
@@ -16,7 +16,8 @@ const signUpUser = async (req, res) => {
     try {
       const hashed_password = await hash(password);
       const user = new User({
-        fullName: fullName,
+        first_name: first_name,
+        last_name: last_name,
         email: email,
         password: hashed_password,
       });
@@ -42,13 +43,18 @@ const loginUser = async (req, res) => {
   if (correctPassowrd) {
     // return the JWT
     const token = jwtToken({
-      fullName: user[0].fullName,
+      firstName: user[0].first_name,
+      lastName: user[0].last_name,
       email: user[0].email,
       _id: user[0]._id,
     });
 
     return res.status(CREATED).json({
       message: "Auth successful",
+      firstName: user[0].first_name,
+      lastName: user[0].last_name,
+      email: user[0].email,
+      _id: user[0]._id,
       token: token,
     });
   }
