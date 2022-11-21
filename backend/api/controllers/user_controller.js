@@ -29,7 +29,7 @@ const signUpUser = async (req, res) => {
 };
 
 const loginUser = async (req, res) => {
-  const { fullName, email, password } = req.body;
+  const { email, password } = req.body;
   const user = await User.find({ email: email });
   if (user.length < 1) {
     // user not found
